@@ -31,7 +31,9 @@ RUN dpkg --add-architecture i386 && \
 	build-essential \
 	ccache \
 	chrpath \
+        clang \
 	cpio \
+	curl \
 	device-tree-compiler \
 	dfu-util \
 	diffstat \
@@ -128,5 +130,8 @@ ENV PATH=/opt/SEGGER/JLink:$PATH
 RUN cd /tmp && wget https://www.nordicsemi.com/-/media/Software-and-other-downloads/Desktop-software/nRF-command-line-tools/sw/Versions-10-x-x/10-14-0/nRF-Command-Line-Tools_10_14_0_Linux64.zip &&\
 	unzip nRF-Command-Line-Tools_10_14_0_Linux64.zip && dpkg -i nRF-Command-Line-Tools_10_14_0_Linux64/nrf-command-line-tools_10.14.0_amd64.deb && \
 	rm -rf nRF-Command-Line-Tools_10_14_0_Linux64*
+
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain 1.51.0 -y
 
 WORKDIR /workingdir

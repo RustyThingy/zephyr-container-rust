@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 usage() { echo "Usage: $0 -p <project directory> -s <serial interface> " 1>&2; exit 1; }
 

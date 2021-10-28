@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # check if podman or docker is installed
 if [ -x "$(command -v podman)" ]; then
