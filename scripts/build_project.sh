@@ -2,13 +2,16 @@
 
 usage() { echo "Usage: $0 -p <project directory> -b <board> " 1>&2; exit 1; }
 
-while getopts "p:b:" o; do
+while getopts "p:b:r:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
 			;;
 		p)
 			p=${OPTARG}
+			;;
+		r)
+			r=${OPTARG}
 			;;
 		*)
             usage
@@ -38,5 +41,5 @@ else
 fi
 
 $CMD run --rm -it --name iot-build-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
-	 --network host --privileged -v ${p}:/workingdir/project  --workdir /workingdir/project  --group-add keep-groups \
-	docker.io/lehrchristoph/vu_internet_of_things_container:latest bash -lc "west build -p -b ${board} ."
+	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust --workdir /workingdir/project \
+	zephyr-rust:latest bash -lc "west build -p -b ${board} ."

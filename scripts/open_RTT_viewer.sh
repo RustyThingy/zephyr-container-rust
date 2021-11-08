@@ -13,6 +13,6 @@ else
 fi
 
 $CMD run --rm -it --name iot-RTT-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
-	 --network host --privileged --group-add keep-groups \
+	 --network host --privileged \
 	 --ipc host -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-     docker.io/lehrchristoph/vu_internet_of_things_container:latest bash -lc "/opt/SEGGER/JLink/JLinkRTTViewerExe"
+     zephyr-rust:latest bash -lc "/opt/SEGGER/JLink/JLinkRTTViewerExe"
