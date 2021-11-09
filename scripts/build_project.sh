@@ -2,7 +2,7 @@
 
 usage() { echo "Usage: $0 -p <project directory> -b <board> " 1>&2; exit 1; }
 
-while getopts "p:b:r:" o; do
+while getopts "p:b:r:w:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
@@ -13,6 +13,9 @@ while getopts "p:b:r:" o; do
 		r)
 			r=${OPTARG}
 			;;
+        w)
+            w=${OPTARG}
+            ;;
 		*)
             usage
             ;;
@@ -41,5 +44,5 @@ else
 fi
 
 $CMD run --rm -it --name iot-build-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
-	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust --workdir /workingdir/project \
+	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust -v ${w}:/workingdir/zephyr-rust-wrappers --workdir /workingdir/project \
 	zephyr-rust:latest bash -lc "west build -p -b ${board} ."

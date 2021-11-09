@@ -2,7 +2,7 @@
 
 usage() { echo "Usage: $0 -p <project directory>" 1>&2; exit 1; }
 
-while getopts "p:b:r:" o; do
+while getopts "p:b:r:w:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
@@ -13,6 +13,9 @@ while getopts "p:b:r:" o; do
 		r)
 			r=${OPTARG}
 			;;
+        w)
+            w=${OPTARG}
+            ;;
 		*)
             usage
             ;;
@@ -38,5 +41,5 @@ fi
 
 $CMD run --rm -it --name iot-x11-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
 	 --network host --privileged -v ${p}:/workingdir/project  --workdir /workingdir/project \
-	 --ipc host -e DISPLAY=$DISPLAY -v ${r}:/workingdir/zephyr-rust -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+	 --ipc host -e DISPLAY=$DISPLAY -v ${r}:/workingdir/zephyr-rust -v ${w}:/workingdir/zephyr-rust-wrappers -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
      zephyr-rust:latest
