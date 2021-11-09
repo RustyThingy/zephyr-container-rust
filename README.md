@@ -5,7 +5,7 @@ expanded to include the rust toolchain required to use Rust with Zephyr.
 
 The image is available at https://hub.docker.com/repository/docker/kdvkrs/zephyr-container-rust
 
-# Helper Scripts:
+## Helper Scripts:
 
 A set of scripts is located inside the `scripts` folder.
 
@@ -21,6 +21,6 @@ A set of scripts is located inside the `scripts` folder.
 
 `open_RTT_viewer.sh` : Opens the segger JLink RTT Viewer for debugging.
 
-# Building the container
+## Building the container
 
 The Dockerfile inside `container` is self-contained and the image can be built by using `docker build .` inside the directory.
