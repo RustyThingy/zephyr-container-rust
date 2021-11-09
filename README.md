@@ -5,7 +5,7 @@ expanded to include the rust toolchain required to use Rust with Zephyr.
 
 The image is available at https://hub.docker.com/repository/docker/kdvkrs/zephyr-container-rust
 
-## Helper Scripts:
+## Helper Scripts
 
 A set of scripts is located inside the `scripts` folder.
 
