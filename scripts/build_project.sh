@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-usage() { echo "Usage: $0 -p <project directory> -b <board> " 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rust-wrappers> [-b <board>]" 1>&2; exit 1; }
 
-while getopts "p:b:r:" o; do
+CONTAINER="kdvkrs/zephyr-container-rust:latest"
+
+while getopts "p:b:r:w:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
@@ -12,6 +14,9 @@ while getopts "p:b:r:" o; do
 			;;
 		r)
 			r=${OPTARG}
+			;;
+		w)
+			w=${OPTARG}
 			;;
 		*)
             usage
@@ -24,7 +29,7 @@ if [ -z "${board}" ]; then
     board="thingy52_nrf52832"
 fi
 
-if [ -z "${board}" ] || [ -z "${p}" ]; then
+if  [ -z "${p}" ] || [ -z "${r}" ] || [ -z "${w}" ] || [ -z "${board}" ]; then
     usage
 fi
 
@@ -42,4 +47,4 @@ fi
 
 $CMD run --rm -it --name iot-build-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
 	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust --workdir /workingdir/project \
-	zephyr-rust:latest bash -lc "west build -p -b ${board} ."
+     -v ${w}:/workingdir/zephyr-rust-wrappers $CONTAINER bash -lc "west build -p -b ${board} ."

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+CONTAINER="kdvkrs/zephyr-container-rust:latest"
+
 # check if podman or docker is installed
 if [ -x "$(command -v podman)" ]; then
     echo 'Found podman installation' >&2
@@ -12,8 +14,8 @@ else
     exit 1
 fi
 
-# geting container
-$CMD pull lehrchristoph/vu_internet_of_things_container:latest
+# pull container
+$CMD pull $CONTAINER
 
 # create temporary working directory
 mkdir temp 
@@ -24,4 +26,3 @@ wget -O 60-openocd.rules https://sf.net/p/openocd/code/ci/master/tree/contrib/60
 sudo cp 60-openocd.rules /etc/udev/rules.d
 
 cd ..
-
