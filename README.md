@@ -1,4 +1,4 @@
-# VU_InternetOfThings_Container
+# zephyr-container-rust
 
 This repository is a fork from https://github.com/LehrChristoph/VU_InternetOfThings_Container and was
 expanded to include the rust toolchain required to use Rust with Zephyr.
