@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-usage() { echo "Usage: $0 -p <project directory> -b <board> " 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rust-wrappers> [-b <board>]" 1>&2; exit 1; }
+
+
+CONTAINER="kdvkrs/zephyr-container-rust:latest"
 
 while getopts "p:b:r:w:" o; do
     case "${o}" in
@@ -27,7 +30,7 @@ if [ -z "${board}" ]; then
     board="thingy52_nrf52832"
 fi
 
-if [ -z "${board}" ] || [ -z "${p}" ]; then
+if  [ -z "${p}" ] || [ -z "${r}" ] || [ -z "${w}" ] || [ -z "${board}" ]; then
     usage
 fi
 
@@ -44,5 +47,5 @@ else
 fi
 
 $CMD run --rm -it --name iot-build-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
-	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust -v ${w}:/workingdir/zephyr-rust-wrappers --workdir /workingdir/project \
-	zephyr-rust:latest bash -lc "west build -p -b ${board} ."
+	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust --workdir /workingdir/project \
+     -v ${w}:/workingdir/zephyr-rust-wrappers $CONTAINER bash -lc "west build -p -b ${board} ."

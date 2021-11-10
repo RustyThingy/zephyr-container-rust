@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-usage() { echo "Usage: $0 -p <project directory> -s <serial interface> " 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rust-wrappers> [-b <board>]" 1>&2; exit 1; }
 
+
+CONTAINER="kdvkrs/zephyr-container-rust:latest"
 while getopts "p:b:r:w:" o; do
     case "${o}" in
 		b)
@@ -13,9 +15,9 @@ while getopts "p:b:r:w:" o; do
 		r)
 			r=${OPTARG}
 			;;
-        w)
-            w=${OPTARG}
-            ;;
+		w)
+			w=${OPTARG}
+			;;
 		*)
             usage
             ;;
@@ -24,6 +26,10 @@ done
 shift $((OPTIND-1))
 
 if  [ -z "${p}" ]; then
+    usage
+fi
+
+if  [ -z "${p}" ] || [ -z "${r}" ] || [ -z "${w}" ]; then
     usage
 fi
 
@@ -40,5 +46,6 @@ else
 fi
 
 $CMD run --rm -it --name iot-flash-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
-	 --network host --privileged -v ${r}:/workingdir/zephyr-rust -v ${p}:/workingdir/project -v ${w}:/workingdir/zephyr-rust-wrappers --workdir /workingdir/project \
-	zephyr-rust:latest bash -lc "west flash"
+	 --network host --privileged -v ${r}:/workingdir/zephyr-rust -v ${p}:/workingdir/project \
+	 -v ${w}:/workingdir/zephyr-rust-wrappers --workdir /workingdir/project \
+	 $CONTAINER bash -lc "west flash"

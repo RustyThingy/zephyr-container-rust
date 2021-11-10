@@ -1,9 +1,11 @@
-# VU_InternetOfThings_Container
-A docker container providing the setup and tools required for the lecture 182.753 Internet of Things (VU 4,0)
+# zephyr-container-rust
 
-The container is available under https://hub.docker.com/repository/docker/lehrchristoph/vu_internet_of_things_container 
+This repository is a fork from https://github.com/LehrChristoph/VU_InternetOfThings_Container and was
+expanded to include the rust toolchain required to use Rust with Zephyr.
 
-# Helper Scripts:
+The image is available at https://hub.docker.com/repository/docker/kdvkrs/zephyr-container-rust
+
+## Helper Scripts
 
 A set of scripts is located inside the `scripts` folder.
 
@@ -19,8 +21,6 @@ A set of scripts is located inside the `scripts` folder.
 
 `open_RTT_viewer.sh` : Opens the segger JLink RTT Viewer for debugging.
 
-If any tool is missing please rais an issue.
+## Building the container
 
-# Building the container
-
-The Dockerfile inside the `container` is self contained and the image can be built by using `docker build .` inside the directory.
+The Dockerfile inside `container` is self-contained and the image can be built by using `docker build .` inside the directory.

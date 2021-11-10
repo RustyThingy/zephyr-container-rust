@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+CONTAINER="kdvkrs/zephyr-container-rust:latest"
+
 # check if podman or docker is installed
 if [ -x "$(command -v podman)" ]; then
     echo 'Found podman installation' >&2
@@ -15,4 +17,4 @@ fi
 $CMD run --rm -it --name iot-RTT-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
 	 --network host --privileged \
 	 --ipc host -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-     zephyr-rust:latest bash -lc "/opt/SEGGER/JLink/JLinkRTTViewerExe"
+     $CONTAINER bash -lc "/opt/SEGGER/JLink/JLinkRTTViewerExe"
