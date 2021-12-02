@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rust-wrappers> [-b <board>]" 1>&2; exit 1; }
+usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rust-wrappers> -c <cargo_home> [-b <board>]" 1>&2; exit 1; }
 
 
 CONTAINER="kdvkrs/zephyr-container-rust:latest"
 
-while getopts "p:b:r:w:" o; do
+while getopts "p:b:r:w:c:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
@@ -18,6 +18,9 @@ while getopts "p:b:r:w:" o; do
 			;;
         w)
             w=${OPTARG}
+            ;;
+        c)
+            c=${OPTARG}
             ;;
 		*)
             usage
@@ -46,6 +49,6 @@ else
     exit 1
 fi
 
-$CMD run --rm -it --name iot-build-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
+$CMD run --rm -it --name iot-build-container -e CARGO_HOME=/cargo_home/ -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
 	 --network host --privileged -v ${p}:/workingdir/project -v ${r}:/workingdir/zephyr-rust --workdir /workingdir/project \
-     -v ${w}:/workingdir/zephyr-rust-wrappers $CONTAINER bash -lc "west build -p -b ${board} ."
+     -v ${w}:/workingdir/zephyr-rust-wrappers -v${c}:/cargo_home/ $CONTAINER bash -lc "west build -b ${board} ."

@@ -4,7 +4,7 @@ usage() { echo "Usage: $0 -p <project directory> -r <zephyr-rust> -w <zephyr-rus
 
 
 CONTAINER="kdvkrs/zephyr-container-rust:latest"
-while getopts "p:b:r:w:" o; do
+while getopts "p:b:r:w:c:" o; do
     case "${o}" in
 		b)
 			board=${OPTARG}
@@ -18,6 +18,9 @@ while getopts "p:b:r:w:" o; do
 		w)
 			w=${OPTARG}
 			;;
+        c)
+            c=${OPTARG}
+            ;;
 		*)
             usage
             ;;
@@ -45,7 +48,7 @@ else
     exit 1
 fi
 
-$CMD run --rm -it --name iot-flash-container -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
+$CMD run --rm -it --name iot-flash-container -e CARGO_HOME=/cargo_home/ -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro \
 	 --network host --privileged -v ${r}:/workingdir/zephyr-rust -v ${p}:/workingdir/project \
-	 -v ${w}:/workingdir/zephyr-rust-wrappers --workdir /workingdir/project \
+	 -v ${w}:/workingdir/zephyr-rust-wrappers -v ${c}:/cargo_home/ --workdir /workingdir/project \
 	 $CONTAINER bash -lc "west flash"
